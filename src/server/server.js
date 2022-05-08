@@ -5,8 +5,7 @@ const connection = require('./db')
 const userRoutes = require('./routes/users')
 const authRoutes = require('./routes/auth')
 const submitReviewRoutes = require('./routes/submitReview');
-const getAllCourseName = require('./utilities/getAllCourseNames')
-const getAllCourseId = require('./utilities/getAllCourseId')
+const getAllCourseDetails = require('./utilities/getAllCourseDetails')
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
@@ -18,8 +17,7 @@ app.use(express.json())
 app.use('/feedback/signup',userRoutes)
 app.use('/feedback/signin',authRoutes)
 app.use('/feedback/review',submitReviewRoutes)
-app.use('/getAllCourseNames',getAllCourseName)
-app.use('/getAllCourseIds',getAllCourseId)
+app.use('/getAllCourseDetails',getAllCourseDetails)
 app.listen(3001, () => {
     console.log('Server fired up at 3001');
 })

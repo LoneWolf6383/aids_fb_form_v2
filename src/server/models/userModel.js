@@ -6,11 +6,11 @@ const passwordComplexity = require('joi-password-complexity');
 
 const userSchema = new mongoose.Schema(
     {
-        name: { type: String, required: true },
-        admissionNo: { type: String, required: true, unique: true },
+        name: { type: String, required: true,unique:true },
+        username: { type: String, required: true, unique: true },
         password: { type: String, required: true, },
     },
-    {collection:'login_info'}
+    {collection:'userLogIn'}
 )
 
 userSchema.methods.generateAuthToken = () => {
@@ -22,7 +22,7 @@ const User = mongoose.model('user', userSchema)
 const validate = (data) => {
     const schema = joi.object({
         name: joi.string().required().label('name'),
-        admissionNo: joi.string().required().label('admission number'),
+        username: joi.string().required().label('username'),
         password:passwordComplexity().required().label('password')
     })
     return schema.validate(data)

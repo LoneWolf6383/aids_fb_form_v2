@@ -4,10 +4,10 @@ const courseSchema = new mongoose.Schema(
     {
         regulation:{type:Number,required:true},
         courseId: { type: String, required: true },
-        courseDetails: { type: Array, required: true },
-        co:{type:Object}
+        courseName:{type:String,required:true},
+        CO: { type: Array, required: true },
     },
     {collection:'Courses'}
 )
-const course = mongoose.model('course',courseSchema)
-module.exports={course}
+const courses = mongoose.model('courses',courseSchema)
+module.exports={courses}

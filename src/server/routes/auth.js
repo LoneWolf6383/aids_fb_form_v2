@@ -11,15 +11,18 @@ router.post('/', async (req, res) => {
         if(User.findOne({ username: req.body.username })){
             user = await User.findOne({ username: req.body.username })
         }
-        // else if (Faculty.findOne({ username: req.body.username })){
-        //     user = await Faculty.findOne({ username: req.body.username })
-        // }
+        else if (Faculty.findOne({ username: req.body.username })){
+            user = await Faculty.findOne({ username: req.body.username })
+        }
         else
-            res.status(500).send({message:'User Does Not Exist'})
+            res.status(500).send({ message: 'User Does Not Exist' })
+        console.log(req.body);
         if(req.body.isVerified===true){
             if (user) {
+                console.log(user.password);
             if (req.body.password === user.password) {
                 console.log({ message: 'login Successfull' })
+                
             }
             else    
                     return res.status(400).send({ message: 'Invalid password/Admission Number' })
@@ -27,7 +30,6 @@ router.post('/', async (req, res) => {
         }
         else
             return res.status(500).send({message:'Invalid Captcha Retry'})
-        res.status(401).send({message:'Welcome back'})
         // res.send({ data:() => {
         //     return jwt.sign({ _id: this._id }, 'jwt-private-key', { expiresIn: '7d' })
         // },message:"logged in successfully"})

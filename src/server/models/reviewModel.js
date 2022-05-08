@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
-// const {array} = require('yargs')
-
+    
 const reviewSchema = new mongoose.Schema(
     {
         admissionNo: { type: String, required: true },

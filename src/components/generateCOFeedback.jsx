@@ -1,8 +1,14 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {Tab,Row,Col,Nav,Button} from 'react-bootstrap'
 import { DynDropDown } from './dynDropDown'
-// import '../App.css'
+const feedBack = require('../server/models/feedbackModel');
 export const GenerateCOFeedback = () => {
+  const [academicYear, setAcademicYear] = useState('')
+  const [semester, setSemester] = useState('')
+  const [courseDetails, setCourseDetails] = useState('')
+  const sendFeedback = () => {
+    
+  }
   return (<>
     <div style={{ backgroundColor: '',height:'100%',width:'100%' }}>
       <h5 style={{
@@ -20,10 +26,7 @@ export const GenerateCOFeedback = () => {
           <Col sm={2}>
             <Nav variant="pills" className="flex-column">
               <Nav.Item>
-                <Nav.Link eventKey="first">Generate CO</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="second">Extras  </Nav.Link>
+                <Nav.Link eventKey="first">Generate Course CO Feedback</Nav.Link>
               </Nav.Item>
             </Nav>
           </Col>
@@ -37,42 +40,18 @@ export const GenerateCOFeedback = () => {
                     <tbody style={{width:'100%'}}>
                     <tr class='tdVal' style={{display: 'flex',width:'100%'}}>
                       <td style={{flex:'1'}}><label>Academic Year:</label></td>
-                      <td style={{flex:'1'}}><DynDropDown label='year'/></td>
+                      <td style={{flex:'1'}}><DynDropDown onChange={val=>{setAcademicYear(val)}} label='year'/></td>
                     </tr>
                     <tr class='tdVal' style={{display: 'flex'}}>
                       <td style={{flex:'1'}}><label>Semester:</label></td>
-                      <td style={{flex:'1'}}><DynDropDown label='semesters'/></td>
-                    </tr>
-                    <tr class='tdVal' style={{display: 'flex'}}>
-                      <td style={{flex:'1'}}><label>Course ID:</label></td>
-                      <td style={{flex:'1'}}><DynDropDown label='courseIds'/></td>
+                      <td style={{flex:'1'}}><DynDropDown onChange={val=>{setSemester(val)}} label='semesters'/></td>
                     </tr>
                     <tr class='tdVal' style={{display: 'flex'}}>
                       <td style={{flex:'1'}}><label>Course Name:</label></td>
-                      <td style={{flex:'1'}}><DynDropDown label='courseNames'/></td>
-                    </tr>
-                    <tr class='tdVal' style={{display: 'flex',width:'100%'}}>
-                      <td style={{flex:'1'}}><label>CO 1:</label></td>
-                      <td style={{flex:'1',width:'100%'}}><input size='100%' type="text" /></td>
-                    </tr>
-                    <tr class='tdVal' style={{display: 'flex',width:'100%'}}>
-                      <td style={{flex:'1'}}><label>CO 2:</label></td>
-                      <td style={{flex:'1',width:'100%'}}><input size='100%' type="text" /></td>
-                    </tr>
-                    <tr class='tdVal' style={{display: 'flex',width:'100%'}}>
-                      <td style={{flex:'1'}}><label>CO 3:</label></td>
-                      <td style={{flex:'1',width:'100%'}}><input size='100%' type="text" /></td>
-                    </tr>
-                    <tr class='tdVal' style={{display: 'flex',width:'100%'}}>
-                      <td style={{flex:'1'}}><label>CO 4:</label></td>
-                      <td style={{flex:'1',width:'100%'}}><input size='100%' type="text" /></td>
-                    </tr>
-                    <tr class='tdVal' style={{display: 'flex',width:'100%'}}>
-                      <td style={{flex:'1'}}>CO 5:</td>
-                      <td style={{flex:'1',width:'100%'}}><input size='100%' type="text" /></td>
+                        <td style={{ flex: '1' }}><DynDropDown onChange={val => { setCourseDetails(val) }} label='courseNames' /><label></label></td>
                     </tr>
                     </tbody>
-                    <Button className='btn btn-success'>Update CO</Button>
+                    <Button className='btn btn-success' onClick={sendFeedback}>Send for Feedback</Button>
                   </table>
                 </div>
               </Tab.Pane>

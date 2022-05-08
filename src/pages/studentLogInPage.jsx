@@ -1,11 +1,13 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import './studentLogIn.css'
-import CaptchaBOX  from '../components/captchaBOX'
+import CaptchaBOX from '../components/captchaBOX'
+import VerifiedIcon from '@mui/icons-material/Verified';
+
 export const StudentLogInPage = () => {
     const [username, setUserName] = useState('')
     const [password, setPassword] = useState('')
-    var isVerified= false
+    const [isVerified, setisVerified] = useState(false)
     const [error, setError] = useState('')
     async function handleSignIn(event) {
       event.preventDefault()
@@ -30,6 +32,7 @@ export const StudentLogInPage = () => {
           <input
             type='text'
             placeholder='Enter your Username'
+            name='Username'
             value={username}
             onChange={(e)=>setUserName(e.target.value)}/>
         </div>  
@@ -44,7 +47,10 @@ export const StudentLogInPage = () => {
         </div>  
       <br />
       <br />
-        <CaptchaBOX verify={ isVerified } />
+        <div style={{ display: 'flex' }}>
+          <CaptchaBOX onChange={(val) => { setisVerified(val) }} />
+          {isVerified === true && (<VerifiedIcon style={{ margin: '22px -15px', }} />)}
+        </div>
       <div id="button" class="row">
        <button onClick={handleSignIn}>Log In</button>
       </div>

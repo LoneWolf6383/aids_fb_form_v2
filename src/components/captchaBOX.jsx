@@ -1,18 +1,26 @@
 import { loadCaptchaEnginge,LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import React, { Component } from 'react'
-
+import VerifiedIcon from '@mui/icons-material/Verified';
 export default class CaptchaBOX extends Component {
+    constructor() {
+        super();
+        this.state = {
+            verified: false,
+        };
+      }
     componentDidMount () {
         loadCaptchaEnginge(4,'rgba(185,190,202,1)'); 
     };
     doSubmit = () => {
         let user_captcha_value = document.getElementById('user_captcha_input').value;
         if (validateCaptcha(user_captcha_value, false) === true) {
-            this.props.isVerified=true
+            this.props.onChange(true)
+            this.setState({verified:true})
             console.log('Captcha Matched');
         }
         else {
-            this.props.isVerified=false
+            this.setState({verified:false})
+            this.props.onChange(false)
             alert('Captcha Does Not Match');
         }
     };

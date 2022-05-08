@@ -5,12 +5,13 @@ import  'react-bootstrap'
 // import { GenerateCOFeedback } from './components/generateCOFeedback'
 // import {DynDropDown} from './components/DynTabs/dynDropDown'
 // import {StudentLogInPage} from './pages/studentLogInPage'
-// import { FacultyDashboard } from './pages/facultyDashboard';
-import {StudentLogInPage} from './pages/studentLogInPage'
+import { FacultyDashboard } from './pages/facultyDashboard';
+// import {StudentLogInPage} from './pages/studentLogInPage'
 function App() { 
   return (
     <>
-      <StudentLogInPage/>
+      <FacultyDashboard/>
+      {/* <StudentLogInPage/> */}
     </>
 
   );
