@@ -1,6 +1,5 @@
 import { loadCaptchaEnginge,LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import React, { Component } from 'react'
-import VerifiedIcon from '@mui/icons-material/Verified';
 export default class CaptchaBOX extends Component {
     constructor() {
         super();

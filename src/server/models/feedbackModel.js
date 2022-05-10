@@ -8,7 +8,7 @@ const feedBackSchema = new mongoose.Schema(
         courseId: { type: String, required: true },
         courseName: { type: String, required: true },
     },
-    {collection:'CO Feedback Interface'}
+    {collection:'CO_Feedback_Interface'}
 )
 
 const feedBack = mongoose.model('feedBack',feedBackSchema)

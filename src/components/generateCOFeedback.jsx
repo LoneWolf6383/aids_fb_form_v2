@@ -1,13 +1,22 @@
+import axios from 'axios';
 import React,{useState} from 'react'
 import {Tab,Row,Col,Nav,Button} from 'react-bootstrap'
 import { DynDropDown } from './dynDropDown'
-const feedBack = require('../server/models/feedbackModel');
 export const GenerateCOFeedback = () => {
   const [academicYear, setAcademicYear] = useState('')
   const [semester, setSemester] = useState('')
   const [courseDetails, setCourseDetails] = useState('')
-  const sendFeedback = () => {
-    
+  const [response, setResponse] = useState('')
+  const sendFeedback = async() => {
+    var data = {
+      facultyUserName: 'asfd',
+      academicYear: academicYear,
+      semester: semester,
+      courseId: courseDetails.split('-')[1],
+      courseName: courseDetails.split('-')[0],
+    }
+    const { data: res } = await axios.post('http://localhost:3001/addFeedBack', data)
+    setResponse(res.message)
   }
   return (<>
     <div style={{ backgroundColor: '',height:'100%',width:'100%' }}>
@@ -51,7 +60,7 @@ export const GenerateCOFeedback = () => {
                         <td style={{ flex: '1' }}><DynDropDown onChange={val => { setCourseDetails(val) }} label='courseNames' /><label></label></td>
                     </tr>
                     </tbody>
-                    <Button className='btn btn-success' onClick={sendFeedback}>Send for Feedback</Button>
+                    <Button className='btn btn-success' onClick={sendFeedback}>Send for Feedback</Button> <p>{ response }</p>
                   </table>
                 </div>
               </Tab.Pane>
