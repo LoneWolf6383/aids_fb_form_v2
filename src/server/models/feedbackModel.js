@@ -12,4 +12,4 @@ const feedBackSchema = new mongoose.Schema(
 )
 
 const feedBack = mongoose.model('feedBack',feedBackSchema)
-module.exports=feedBack
+module.exports={feedBack}

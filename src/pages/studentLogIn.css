@@ -1,8 +1,8 @@
-body{
+ /* body{
   background: rgb(0, 251, 255);
-  background: linear-gradient(135deg, rgb(0, 115, 246) 20%,#ff02c8 90%);
+  background: linear-gradient(155deg, rgb(0, 115, 246) 45%,#ff02c8 99%);
   font-family: "work sans";
-}
+} */
 
 html{
   font-size: 100%;
@@ -13,9 +13,11 @@ html{
   min-width: 300px;
   width: 50%;
   height: 550px;
-  margin: 100px auto;
+  margin: 10px 100px 100px 500px;
   background-color: #FFFFFF;
   border-radius: 25px;
+  border: 5px solid;
+  border-color: black;
 }
 
 #headerTitle{

@@ -1,9 +1,8 @@
 const router = require('express').Router()
-const feedBack = require('../models/feedbackModel');
+const {feedBack} = require('../models/feedbackModel');
 router.post('/', async (req, res) => {
     try {
-        const user = await feedBack.findOne({...req.body})
-        if (user)
+        if (await feedBack.findOne({...req.body}))
             return res.status(200).send({message:'Feedback already exists'})
         else {
             await new feedBack({...req.body}).save()

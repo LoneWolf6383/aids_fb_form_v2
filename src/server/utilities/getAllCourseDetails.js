@@ -7,7 +7,7 @@ router.post('/', async (req, res) => {
     for (let i  = 0; i < docs.length; i++) {
         courseDetails.push(docs[i].courseName+'-'+docs[i].courseId)
     } 
-    res.send(Array.from(new Set(courseDetails)))
+    return res.send(Array.from(new Set(courseDetails)))
 })
 
 module.exports=router

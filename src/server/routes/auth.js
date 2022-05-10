@@ -1,30 +1,37 @@
 const router = require('express').Router()
 const {User} = require('../models/userModel')
-const {Faculty} = require('../models/facultModel')
-const joi = require('joi');
+// const joi = require('joi');
 router.post('/', async (req, res) => {
     try {
         var user
+        var isStudent = false
+        var isFaculty = false
+        // console.log(req.body);
         // const { error } = validate(req.body)
         // if(error)
         //     return res.status(400).send({ message: error.details[0].message })
         if(User.findOne({ username: req.body.username })){
             user = await User.findOne({ username: req.body.username })
+            if(user.userRole==='student')
+                isStudent=true
+                
+            if(user.userRole==='faculty')
+                isFaculty=true
+                
         }
-        else if (Faculty.findOne({ username: req.body.username })){
-            user = await Faculty.findOne({ username: req.body.username })
-        }
-        else
-            res.status(500).send({ message: 'User Does Not Exist' })
-        console.log(req.body);
+        if(!isFaculty && !isStudent)
+            return res.status(500).send({ message: 'User Does Not Exist' })
+        console.log(user);
         if(req.body.isVerified===true){
             if (user) {
-                console.log(user.password);
-            if (req.body.password === user.password) {
-                console.log({ message: 'login Successfull' })
-                
-            }
-            else    
+                if (req.body.password === user.password) {
+                    console.log({ message: 'login Successfull' })
+                    if (isFaculty)
+                        return res.send('/facultyDashboard')
+                    if(isStudent)
+                        return res.send('/feedback')
+                }
+                else    
                     return res.status(400).send({ message: 'Invalid password/Admission Number' })
             }
         }
@@ -35,15 +42,15 @@ router.post('/', async (req, res) => {
         // },message:"logged in successfully"})
     } catch (error) {
         console.log(error);
-        res.status(500).send({ message:"Internal Server Error"})
+        return res.status(500).send({ message:"Internal Server Error"})
     }
 })
-const validate = (data) => {
-    const schema = joi.object({
-        username: joi.string().required().label('username'),
-        password: joi.string().required().label('password'),
+// const validate = (data) => {
+//     const schema = joi.object({
+//         username: joi.string().required().label('username'),
+//         password: joi.string().required().label('password'),
         
-    })
-    return schema.validate(data)
-}
+//     })
+//     return schema.validate(data)
+// }
 module.exports = router

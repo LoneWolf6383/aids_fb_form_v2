@@ -9,12 +9,13 @@ export const GenerateCOFeedback = () => {
   const [response, setResponse] = useState('')
   const sendFeedback = async() => {
     var data = {
-      facultyUserName: 'asfd',
+      facultyUserName: window.sessionStorage.getItem('username'),
       academicYear: academicYear,
       semester: semester,
       courseId: courseDetails.split('-')[1],
       courseName: courseDetails.split('-')[0],
     }
+    console.log(data);
     const { data: res } = await axios.post('http://localhost:3001/addFeedBack', data)
     setResponse(res.message)
   }

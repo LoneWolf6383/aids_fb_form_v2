@@ -1,23 +1,38 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import useDynTabs from 'react-dyn-tabs'
 import EmojiRating from 'react-emoji-rating'
 import { SubmitReview } from './submitReview'
-import { initialTabs, GenerateTabs, questions} from './tabs'
+// import { initialTabs, GenerateTabs, questions} from './tabs'
 import { StarRating } from './starRating'
 export const DynTabs = () => {
-    GenerateTabs()
+  const [content, setContent] = useState([])
+  useEffect(() => {
+    const getContent = async () => {
+      var data = []
+      const { data: res } = await axios.post('http://localhost:3001/getFeedbackPattern')
+      setContent(res)
+    }
+    getContent()
+    createNewTabs(content)
+  }, [])
+  const createNewTabs = (tab_content) => {
+    for (const key in content) {
+      options.tabs.push(actions.openNewTab(key,tab_content[key][0],tab_content[key][1]))
+      }
+    }
     var options = {
       tabs: [
-        {
-          id: '0',
-          title: '+',
-          panelComponent: (props) => <>
-            <h4> Add New Course</h4> 
-            <input id='course_name_ip' type="text" placeholder='Course Name' />&nbsp;
-            <button className='btn btn-success' onClick={createNewTabs}>Create</button>
-          </>,
-          closable: false,
-        },
+          {
+            id: '0',
+            title: '+',
+            panelComponent: (props) => <>
+              <h4> Add New Course</h4> 
+              <input id='course_name_ip' type="text" placeholder='Course Name' />&nbsp;
+              <button className='btn btn-success'>Create</button>
+            </>,
+            closable: false,
+          },
       ],
       selectedTabID: '1',
       isVertical: true
@@ -25,15 +40,15 @@ export const DynTabs = () => {
     // for (const key in initialTabs) {
     //   initialTabs[key]['id']=(parseInt(key)+1).toString()
     // }
-    options=options.tabs.concat(initialTabs)
-    const createNewTabs = () => {
-      options.tabs.push(actions.openNewTab())
-      document.getElementById('course_name_ip').value=''
-    }
+    // options=options.tabs.concat(initialTabs)
+  
+
+      // document.getElementById('course_name_ip').value=''
     const actions = {
-      openNewTab: () => {
+      openNewTab: (id,name,questions) => {
         _instance.open({  
-          title: document.getElementById('course_name_ip').value,
+          id: id,
+          title: name,
           lazy: true,
           panelComponent: (props) => <div style={{display:'flex'}}>
           <table style={{flex:'1'}}>
@@ -54,7 +69,7 @@ export const DynTabs = () => {
                   <tr style={{display:'flex'}}>
                     <td style={{flex:'1'}}><li>{q}</li></td>
                     <td>  
-                        <StarRating label={document.getElementById('course_name_ip')+ "+" + q} />
+                        <StarRating label={name+ "+" + q} />
                     </td>
                     </tr>)
                 }
@@ -79,17 +94,17 @@ export const DynTabs = () => {
           closable: true,
         })
       },
-      // toggleVertical: () => {
-      //   const _isVertical = _instance.getOption('isVertical');
-      //   _instance.setOption('isVertical', !_isVertical).refresh();
-      // },
+      toggleVertical: () => {
+        const _isVertical = _instance.getOption('isVertical');
+        _instance.setOption('isVertical', !_isVertical).refresh();
+      },
     }
     let _instance
     const [TabList, PanelList, ready] = useDynTabs(options)
-    ready((instance) => {
-      _instance = instance
-    })
+    // ready((instance) => {
+    //   _instance = instance
+    // })
     return (
         <><TabList /><PanelList /></>
-  )
+    )
 }

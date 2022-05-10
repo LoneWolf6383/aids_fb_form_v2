@@ -1,7 +1,6 @@
 import StarRatings from "react-star-ratings";
 import React,{useState} from 'react'
 import _ from 'lodash' 
-// import { User } from '../server/models/userModel';
 
 var ratings={}
 const StarRating = (props) => {
@@ -11,7 +10,6 @@ const StarRating = (props) => {
         _.set(ratings,[name[0],name[1]],newRating)
       setRate(newRating)
       console.log(ratings);
-      // User.updateOne({ admissionNo: window.sessionStorage.getItem('admissionNo'), review: JSON.stringify(ratings)})
       }
   return (
           <StarRatings
