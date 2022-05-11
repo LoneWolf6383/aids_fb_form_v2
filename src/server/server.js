@@ -14,12 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 connection()
 app.use(cors())
 app.use(express.json())
-// app.get('/feedback', (req, res) => {
-//     res('C:\\Users\\Namasivaayam 007\\Documents\\programming\\College Projects\\aids_fb_form_v2\\src\\pages\\feedBackForm.jsx');
-//   });   
-// app.get('/facultyDashboard', (req, res) => {
-//     res('C:\\Users\\Namasivaayam 007\\Documents\\programming\\College Projects\\aids_fb_form_v2\\src\\pages\\facultyDashboard.jsx');
-//   });   
+
 app.use('/feedback/signin',authRoutes)
 app.use('/feedback/review',submitReviewRoutes)
 app.use('/getAllCourseDetails', getAllCourseDetails)

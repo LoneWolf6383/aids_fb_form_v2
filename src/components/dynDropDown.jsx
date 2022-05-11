@@ -14,7 +14,7 @@ export const DynDropDown = (props) => {
   var final = []
   var years = ['Select', '2020-21', '2021-22', '2022-23', '2023-24']
   var semesters = ['Select', 'odd', 'even']
-  if (props.label === 'courseNames') {
+  if (props.label === 'courseDetails') {
     final = courseDetails
     final.unshift('Select')
     final=Array.from(new Set(final))

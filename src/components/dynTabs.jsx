@@ -1,110 +1,115 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
-import useDynTabs from 'react-dyn-tabs'
+import React, { useState, useEffect ,useCallback} from 'react'
 import EmojiRating from 'react-emoji-rating'
 import { SubmitReview } from './submitReview'
-// import { initialTabs, GenerateTabs, questions} from './tabs'
 import { StarRating } from './starRating'
+import {Tab} from '@mui/material'
+import {TabList,TabContext,TabPanel} from '@mui/lab'
 export const DynTabs = () => {
+  const [ratings, setRatings] = useState({})
+  const [selectedTab, setSelectedTab] = useState('0')
+  const [tabs, setTabs] = useState([])
+  const [panels, setPanels] = useState([])
+  const [tabIndex, setTabIndex] = useState(1)
   const [content, setContent] = useState([])
+  const generateTabs = useCallback(() => {
+    var tabs_array = []
+    var panels_array = []
+    for (const key in content) {
+      tabs_array.push({
+        value: `${key}`,
+        label: content[key][0], 
+      })
+      panels_array.push({
+        value: `${key}`,
+        child: () => <div style={{ display: 'flex'}}>
+          <table style={{ flex: '1'}}>
+            <tr>
+              <td><h4>Feed Back Section</h4><br /></td> 
+            </tr>
+            <tr>   
+              <td>
+                <div style={{ display: 'flex' }}> 
+                  <p style={{ flex: '1' }}>Opinion On this course</p>
+                  <div   style={{ flex: '1' ,textAlign:'right'}}><textarea id={content[key][0]} cols="30" rows="3"></textarea></div>
+                </div>
+              </td>
+            </tr> 
+            <tr style={{ listStyle: "none" }}>
+              {content[key][1].map((q) =>
+                <tr style={{ display: 'flex' }}>
+                <td style={{ flex: '1' }}><li>{q}</li></td>
+                <td style={{ flex: '1' }}>
+                    <StarRating label={content[key][0] + "+" + q} onChange={ (val) =>{ setRatings(val)}} />
+                </td>
+                </tr> 
+              )}
+            </tr>
+          </table>
+          <div style={{
+            flex: '1',
+            textAlign: 'center',   
+            position: 'relative',  
+            top: '50%',
+            zoom: '150%'
+          }}>
+            <br />
+            <br />
+            <br />
+            <h6>Overall Feed Back</h6>
+            <EmojiRating variant='classic' />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <SubmitReview data={''} ratings={ratings} />
+          </div>
+        </div>
+      })
+      setTabIndex(key + 1)
+    }
+    setTabs(tabs_array)
+    setPanels(panels_array)
+},[content,ratings])
+
   useEffect(() => {
-    const getContent = async () => {
+    generateTabs()
+  }, [generateTabs])
+  useEffect(() => {
+    const getContent = async () => { 
       var data = []
       const { data: res } = await axios.post('http://localhost:3001/getFeedbackPattern')
       setContent(res)
     }
     getContent()
-    createNewTabs(content)
   }, [])
-  const createNewTabs = (tab_content) => {
-    for (const key in content) {
-      options.tabs.push(actions.openNewTab(key,tab_content[key][0],tab_content[key][1]))
-      }
-    }
-    var options = {
-      tabs: [
-          {
-            id: '0',
-            title: '+',
-            panelComponent: (props) => <>
-              <h4> Add New Course</h4> 
-              <input id='course_name_ip' type="text" placeholder='Course Name' />&nbsp;
-              <button className='btn btn-success'>Create</button>
-            </>,
-            closable: false,
-          },
-      ],
-      selectedTabID: '1',
-      isVertical: true
-    }
-    // for (const key in initialTabs) {
-    //   initialTabs[key]['id']=(parseInt(key)+1).toString()
-    // }
-    // options=options.tabs.concat(initialTabs)
   
-
-      // document.getElementById('course_name_ip').value=''
-    const actions = {
-      openNewTab: (id,name,questions) => {
-        _instance.open({  
-          id: id,
-          title: name,
-          lazy: true,
-          panelComponent: (props) => <div style={{display:'flex'}}>
-          <table style={{flex:'1'}}>
-            <tr>
-              <td><h4>Feed Back Section</h4><br /></td>
-            </tr>
-            <tr>
-              <td>
-                <div style={{ display: 'flex' }}>
-                 <p style={{flex:'1'}}>Opinion On this course</p>
-                 <textarea name="" id="" cols="50" rows="5" style={{ flex: '2' }}></textarea>
-                </div>
-                </td>
-              </tr>
-              <tr style={{ listStyle: "none" }}>
-                {
-                  questions.map((q) =>
-                  <tr style={{display:'flex'}}>
-                    <td style={{flex:'1'}}><li>{q}</li></td>
-                    <td>  
-                        <StarRating label={name+ "+" + q} />
-                    </td>
-                    </tr>)
-                }
-            </tr>
-            </table>
-            <div style={{
-              flex: '2',
-              textAlign: 'center',
-              position:'absolute',
-              left: '130%',
-              top: '25%',
-              resize: 'both',
-              zoom: '150%'
-            }}>         
-                  <h6>Overall Feed Back</h6>
-                  <EmojiRating
-                          variant='classic'
-              />
-              <SubmitReview data={document.getElementById(document.getElementById('course_name_ip').value+"_txt_area").value}/>
-              </div>
-        </div>,
-          closable: true,
-        })
-      },
-      toggleVertical: () => {
-        const _isVertical = _instance.getOption('isVertical');
-        _instance.setOption('isVertical', !_isVertical).refresh();
-      },
-    }
-    let _instance
-    const [TabList, PanelList, ready] = useDynTabs(options)
-    // ready((instance) => {
-    //   _instance = instance
-    // })
-    return (
-        <><TabList /><PanelList /></>
+    
+  const handleChange = (event, newValue) => {
+    console.log(newValue);
+    setSelectedTab(newValue)
+  }
+    
+  return (
+    <div>
+      <TabContext value={selectedTab}>
+        <TabList onChange={handleChange}>
+          {
+            tabs.map(tab => (<Tab key={tab.value} label={tab.label} value={tab.value} />))
+          }
+        </TabList>
+        {
+          panels.map(panel => (
+            <TabPanel key={panel.value} value={panel.value}>
+               {panel.child()}   
+            </TabPanel>
+          ))
+        }
+      </TabContext>
+      
+    </div>
     )
 }

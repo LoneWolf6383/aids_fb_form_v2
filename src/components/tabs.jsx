@@ -1,77 +1,82 @@
-import React,{useState} from 'react'
-import { StarRating } from './starRating'
-import EmojiRating from 'react-emoji-rating'
-import { SubmitReview } from './submitReview'
-var initialTabs = []
-const questions = [
-    'Usage of Real Life examples for each topic discussed:',
-    'Level of Understanding:',
-    'Usage of Projector,E-Learning Materials etc:',
-    'Rate the Doubt clearing ability of the faculty:' 
-  ]
-var courses = [
-    'Python Programming',
-    'Data Structures',
-    'DBMS',
-    'Mathematics-III',
-    'Intro to AIDS'
-]
-const GenerateTabs = () => {
-    const [review, setReview] = useState()
-      for(const item in courses) {
-        initialTabs.push({ 
-          id:item.toString(),
-          title:courses[item],
-          lazy: true,
-          panelComponent: (props) => <div style={{display:'flex'}}>
-        <table style={{flex:'1'}}>
-          <tr>
-            <td><h4>Feed Back Section</h4><br /></td>
-          </tr>
-          <tr>
-            <td>
-              <div style={{ display: 'flex' }}>
-               <p style={{flex:'1'}}>Opinion On this course</p>
-                    <textarea
-                      value={review}
-                      onChange={(e)=>setReview(e.target.value)}
-                      id={courses[item] + "_txt_area"}
-                      cols="50" rows="5"
-                      style={{ flex: '2' }}
-                    ></textarea>
-              </div>
-              </td>
-          </tr>
-          <tr style={{ listStyle: "none" }}>
-          {
-            questions.map((q) =>
-        <tr style={{display:'flex'}}>
-          <td style={{flex:'1'}}><li>{q}</li></td>
-                <td>  
-                  <StarRating label={courses[item] + "+" + q} />
-          </td>
-        </tr>)}
-            </tr>
-          </table>
-          <div style={{
-            flex: '2',
-            textAlign: 'center',
-            position:'absolute',
-            left: '130%',
-            top: '25%',
-            resize: 'both',
-            zoom: '150%'
-          }}>         
-                <h6>Overall Feed Back</h6>
-                <EmojiRating
-                        variant='classic'
-              />  
-              <SubmitReview data={review}/>
-            </div>
-      </div>,
-        closable: false,
-      })
-    } 
-  return 
+import React from "react";
+import { Tabs, Tab, Box, Paper, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import { PostAdd } from "@material-ui/icons";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%"
+  }
+}));
+
+let maxTabIndex = 0;
+let currentTablIndex = 0;
+export default function Pipeline(props) {
+  const classes = useStyles();
+
+  // Handle Tab Button Click
+  const [tabId, setTabId] = React.useState(0);
+  const handleTabChange = (event, newTabId) => {
+    if (newTabId === "tabProperties") {
+      handleAddTab();
+    } else {
+      currentTablIndex = newTabId;
+      setTabId(newTabId);
+    }
+  };
+
+  // Handle Add Tab Button
+  const [tabs, setAddTab] = React.useState([]);
+  const handleAddTab = () => {
+    maxTabIndex = maxTabIndex + 1;
+    setAddTab([
+      ...tabs,
+      <Tab label={`New Tab ${maxTabIndex}`} key={maxTabIndex} />
+    ]);
+    handleTabsContent();
+  };
+
+  // Handle Add Tab Content
+  const [tabsContent, setTabsContent] = React.useState([
+    <TabPanel tabId={tabId}>Default Panel - {Math.random()}</TabPanel>
+  ]);
+  const handleTabsContent = () => {
+    setTabsContent([
+      ...tabsContent,
+      <TabPanel tabId={tabId}>New Tab Panel - {Math.random()}</TabPanel>
+    ]);
+  };
+
+  return (
+    <Paper className={classes.root}>
+      <AppBar position="static" color="inherit">
+        <Tabs
+          value={tabId}
+          onChange={handleTabChange}
+          variant="scrollable"
+          scrollButtons="on"
+        >
+          <Tab label="Default" />
+          {tabs.map(child => child)}
+          <Tab icon={<PostAdd />} value="tabProperties" />
+        </Tabs>
+      </AppBar>
+      <Box padding={2}>{tabsContent.map(child => child)}</Box>
+    </Paper>
+  );
 }
-export {initialTabs,GenerateTabs,questions,courses}
+
+function TabPanel(props) {
+  const { children, tabId } = props;
+  return (
+    <Box
+      value={maxTabIndex}
+      index={maxTabIndex}
+      hidden={tabId !== currentTablIndex}
+      key={maxTabIndex}
+    >
+      {children}
+    </Box>
+  );
+}

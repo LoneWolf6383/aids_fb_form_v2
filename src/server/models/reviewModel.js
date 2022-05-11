@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
     
 const reviewSchema = new mongoose.Schema(
     {
-        admissionNo: { type: String, required: true },
+        username: { type: String, required: true },
         review:{type:Array,required:true}
     },
     {
@@ -11,4 +11,4 @@ const reviewSchema = new mongoose.Schema(
 )
 
 const Review = mongoose.model('review', reviewSchema)
-module.exports= Review
+module.exports= {Review}

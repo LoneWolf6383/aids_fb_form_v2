@@ -58,7 +58,7 @@ export const GenerateCOFeedback = () => {
                     </tr>
                     <tr class='tdVal' style={{display: 'flex'}}>
                       <td style={{flex:'1'}}><label>Course Name:</label></td>
-                        <td style={{ flex: '1' }}><DynDropDown onChange={val => { setCourseDetails(val) }} label='courseNames' /><label></label></td>
+                        <td style={{ flex: '1' }}><DynDropDown onChange={val => { setCourseDetails(val) }} label='courseDetails' /><label></label></td>
                     </tr>
                     </tbody>
                     <Button className='btn btn-success' onClick={sendFeedback}>Send for Feedback</Button> <p>{ response }</p>

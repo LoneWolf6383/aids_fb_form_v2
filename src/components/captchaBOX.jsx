@@ -15,12 +15,10 @@ export default class CaptchaBOX extends Component {
         if (validateCaptcha(user_captcha_value, false) === true) {
             this.props.onChange(true)
             this.setState({verified:true})
-            console.log('Captcha Matched');
         }
         else {
             this.setState({verified:false})
             this.props.onChange(false)
-            alert('Captcha Does Not Match');
         }
     };
     render() {

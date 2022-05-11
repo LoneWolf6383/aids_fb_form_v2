@@ -9,7 +9,7 @@ const StarRating = (props) => {
         name = name.split('+')
         _.set(ratings,[name[0],name[1]],newRating)
       setRate(newRating)
-      console.log(ratings);
+      props.onChange(ratings)
       }
   return (
           <StarRatings
@@ -18,9 +18,9 @@ const StarRating = (props) => {
             changeRating={handleRating}
             starDimension={30}
             starSpacing={0}
-            starRatedColor={'rgb(253, 1, 1)'}
-          starEmptyColor={'rgb(109, 122, 130)'}
-            starHoverColor={'rgb(253, 253, 1)'}
+            starRatedColor={'rgb(253, 236, 1)'}
+            starEmptyColor={'rgb(109, 122, 130)'}
+            starHoverColor={'rgb(253, 1, 1)'}
             name={props.label}
           />
   )

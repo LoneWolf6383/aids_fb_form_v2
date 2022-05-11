@@ -4,14 +4,20 @@ const { User } = require('../models/userModel');
 
 router.post('/', async (req, res) => {
     try {
-        console.log('before req.body');
-        console.log(req.body);
-        const user = User.findOne({ admissionNo:req.body.admissionNo})
-        if(user){
-            await Review.insertOne({
-                admissionNo: req.body.admissionNo,
+        if (User.findOne({ username: req.body.username })) {
+            if (Review.findOne({ username: req.body.username })) {
+                var user = Review.findOne({ username: req.body.username })
+                user.updateOne({ username: req.body.username }, { $set: { review: req.body.review } }, (err, res) => {
+                if(err)
+                        console.log(err);
+                })
+            }
+            else{
+            await new Review({
+                username: req.body.username,
                 review: req.body.review
-            })
+            }).save()
+            }
             console.log('Review added');
         }
         else

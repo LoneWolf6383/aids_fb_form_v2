@@ -1,15 +1,16 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-// import './studentLogIn.css'
+import './studentLogIn.css'
 import { NavBar } from '../components/NavBar'
 import { Banner } from '../components/banner'
 import CaptchaBOX from '../components/captchaBOX'
-import VerifiedIcon from '@mui/icons-material/Verified';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
 export const StudentLogInPage = () => {
     const [username, setUserName] = useState('')
     const [password, setPassword] = useState('')
-    const [isVerified, setisVerified] = useState(false)
+    const [isVerified, setisVerified] = useState()
     const [error, setError] = useState('')
     async function handleSignIn(event) {
       event.preventDefault()
@@ -17,7 +18,6 @@ export const StudentLogInPage = () => {
         try {
             const url = 'http://localhost:3001/feedback/signin'
           window.sessionStorage.setItem('username', username)
-          var x= ""
           const res = await axios.post(url, data)
           console.log(res);
           if (res.data ==='/feedback'){
@@ -58,10 +58,11 @@ export const StudentLogInPage = () => {
           <br />
           <br />
           <div style={{ display: 'flex' }}>
-            <CaptchaBOX onChange={(val) => { setisVerified(val); } } />
-            {isVerified === true && (<VerifiedIcon style={{ margin: '22px -15px', }} />)}
+            <CaptchaBOX onChange={(val) => { setisVerified(val)} } />
+            {isVerified === true && (<ThumbUpOffAltIcon style={{ margin: '22px -15px', }} />)}
+            {isVerified === false && (<ThumbDownOffAltIcon style={{ margin: '22px -15px', }} />)}
           </div>
-          <div id="button" class="row">
+          <div id="button" class="row"> 
             <button onClick={handleSignIn}>Log In</button>
           </div>
         </div>
